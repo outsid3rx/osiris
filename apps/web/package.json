@@ -1,0 +1,36 @@
+{
+  "name": "@osiris/web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint './src/**/*.{ts,tsx}'",
+    "lint:fix": "eslint './src/**/*.{ts,tsx}' --fix",
+    "preview": "vite preview",
+    "generate-api": "yarn exec revortex && eslint ./src/lib/api/index.ts --fix"
+  },
+  "dependencies": {
+    "ky": "^1.9.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vite-pwa/assets-generator": "^0.2.6",
+    "@vitejs/plugin-react": "^4.2.1",
+    "globals": "^15.14.0",
+    "revortex": "2.0.2-beta.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.0.11",
+    "vite-plugin-pwa": "^0.21.1",
+    "workbox-core": "^7.3.0",
+    "workbox-window": "^7.3.0"
+  },
+  "resolutions": {
+    "sharp": "0.32.6",
+    "sharp-ico": "0.1.5"
+  }
+}

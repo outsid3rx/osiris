@@ -1,0 +1,5 @@
+{
+  "out": "./src/lib/api/",
+  "alias": "~server/",
+  "repo": "../server"
+}

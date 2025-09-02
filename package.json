@@ -1,0 +1,23 @@
+{
+  "name": "osiris",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:outsid3rx/osiris.git",
+  "author": "Max Zernyaev <winterzz@internet.ru>",
+  "scripts": {
+    "lint:server": "cd ./apps/server && yarn lint"
+  },
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-kit": "^11.0.0",
+    "eslint-plugin-import": "^2.32.0",
+    "lefthook": "^1.12.3",
+    "prettier": "^3.0.0"
+  }
+}
