@@ -2,3 +2,5 @@ pre-commit:
   jobs:
     - name: lint server
       run: yarn workspace @osiris/server lint
+    - name: lint web
+      run: yarn workspace @osiris/web lint
