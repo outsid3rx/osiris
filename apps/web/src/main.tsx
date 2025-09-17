@@ -1,21 +1,30 @@
 import './index.css'
+import '@mantine/core/styles.css'
 
-import ky from 'ky'
+import { MantineProvider } from '@mantine/core'
+import { connectLogger, createCtx } from '@reatom/framework'
+import { reatomContext } from '@reatom/npm-react'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { apiCall } from 'revortex/dist/wrapper'
 
 import { App } from './App'
-import { createApi } from './lib/api'
 
-await createApi(ky, apiCall).SettingsController.isFirstSetup()
+const ctx = createCtx()
+
+if (import.meta.env.DEV) {
+  connectLogger(ctx)
+}
 
 const root = document.querySelector('#root')
 
 if (root) {
   createRoot(root).render(
     <StrictMode>
-      <App />
+      <MantineProvider>
+        <reatomContext.Provider value={ctx}>
+          <App />
+        </reatomContext.Provider>
+      </MantineProvider>
     </StrictMode>,
   )
 }

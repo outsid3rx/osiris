@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    "paths": {
-      "~server/*": ["./apps/server/src/*"]
-    },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   }

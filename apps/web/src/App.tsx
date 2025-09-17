@@ -1,5 +1,13 @@
 import './App.css'
 
-export function App() {
-  return <p>Hello world</p>
-}
+import { reatomComponent } from '@reatom/npm-react'
+
+import { settingsAtom } from '~entities/settings'
+import { SettingsPage } from '~pages/settings'
+import { SplashScreenPage } from '~pages/splash-screen'
+
+export const App = reatomComponent(({ ctx }) => {
+  const { isFirstSetup } = ctx.spy(settingsAtom.dataAtom)
+
+  return isFirstSetup ? <SettingsPage /> : <SplashScreenPage />
+})

@@ -1,5 +1,6 @@
 {
-  "out": "./src/lib/api/",
+  "out": "./src/shared/api/",
+  "file": "api.ts",
   "alias": "~server/",
   "repo": "../server"
 }

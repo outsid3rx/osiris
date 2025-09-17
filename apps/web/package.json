@@ -9,9 +9,13 @@
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{ts,tsx}' --fix",
     "preview": "vite preview",
-    "generate-api": "yarn exec revortex && eslint ./src/lib/api/index.ts --fix"
+    "generate-api": "yarn exec revortex && eslint ./src/shared/api/api.ts --fix"
   },
   "dependencies": {
+    "@mantine/core": "^8.2.8",
+    "@mantine/hooks": "^8.2.8",
+    "@reatom/framework": "^3.4.64",
+    "@reatom/npm-react": "^3.10.6",
     "ky": "^1.9.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -22,7 +26,10 @@
     "@vite-pwa/assets-generator": "^0.2.6",
     "@vitejs/plugin-react": "^4.2.1",
     "globals": "^15.14.0",
-    "revortex": "2.0.2-beta.0",
+    "postcss": "^8.5.6",
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1",
+    "revortex": "2.0.2-beta.2",
     "typescript": "~5.7.2",
     "vite": "^6.0.11",
     "vite-plugin-pwa": "^0.21.1",

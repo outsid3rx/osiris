@@ -1,0 +1,1 @@
+export { settingsAtom } from './model'

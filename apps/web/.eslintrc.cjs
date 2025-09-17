@@ -17,11 +17,12 @@ module.exports = {
       }
     },
     {
-      files: ["./src/lib/api/**"],
+      files: ["./src/shared/api/api.ts"],
       rules: {
         "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": "off",
-        "@typescript-eslint/no-namespace": "off"
+        "@typescript-eslint/no-namespace": "off",
+        "import-x/no-unresolved": "off"
       }
     }
   ]
