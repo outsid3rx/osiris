@@ -1,42 +1,47 @@
+import { reatomComponent } from '@reatom/npm-react'
+import { useTranslation } from 'react-i18next'
+
+import { initSettings } from '~features/init-settings'
 import {
   Button,
-  Center,
-  Flex,
-  Paper,
-  PasswordInput,
-  Title,
-} from '@mantine/core'
-import { reatomComponent } from '@reatom/npm-react'
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+} from '~shared/shadcn/components/ui/'
 
-import { initSettings } from '~features/init-settings/model'
+export const SettingsPage = reatomComponent(({ ctx }) => {
+  const { t } = useTranslation('initial-setup')
 
-export const SettingsPage = reatomComponent(({ ctx }) => (
-  <Center>
-    <Paper shadow="xs" radius="md" p="lg">
-      <Flex
-        mih={50}
-        gap="md"
-        justify="flex-start"
-        align="flex-end"
-        direction="column"
-        wrap="wrap"
-      >
-        <Title order={2}>Первая настройка</Title>
-        <PasswordInput
-          label="Пароль для входа"
-          withAsterisk
-          placeholder="Пароль для входа"
-          radius="md"
-          w="100%"
-        />
+  return (
+    <Card className="w-full max-w-sm m-auto">
+      <CardHeader>
+        <CardTitle>{t('modal.title')}</CardTitle>
+        <CardDescription>
+          Сейчас нужно установить пароль, который будет использоваться для входа
+          в приложение
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid w-full max-w-sm items-center gap-3">
+          <Label htmlFor="password">Пароль для входа</Label>
+          <Input id="password" type="password" placeholder="Пароль для входа" />
+        </div>
+      </CardContent>
+      <CardFooter>
         <Button
-          variant="filled"
           disabled={ctx.spy(initSettings.statusesAtom).isPending}
           onClick={() => initSettings(ctx, { password: 'admin' })}
+          variant="default"
+          className="w-full"
         >
           Далее
         </Button>
-      </Flex>
-    </Paper>
-  </Center>
-))
+      </CardFooter>
+    </Card>
+  )
+})

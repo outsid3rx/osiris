@@ -1,7 +1,7 @@
+import './shared/styles/global.css'
 import './index.css'
-import '@mantine/core/styles.css'
+import './i18n'
 
-import { MantineProvider } from '@mantine/core'
 import { connectLogger, createCtx } from '@reatom/framework'
 import { reatomContext } from '@reatom/npm-react'
 import { StrictMode } from 'react'
@@ -20,11 +20,9 @@ const root = document.querySelector('#root')
 if (root) {
   createRoot(root).render(
     <StrictMode>
-      <MantineProvider>
-        <reatomContext.Provider value={ctx}>
-          <App />
-        </reatomContext.Provider>
-      </MantineProvider>
+      <reatomContext.Provider value={ctx}>
+        <App />
+      </reatomContext.Provider>
     </StrictMode>,
   )
 }

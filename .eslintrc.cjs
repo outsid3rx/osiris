@@ -3,7 +3,6 @@ const { configure, presets } = require("eslint-kit");
 module.exports = configure({
   presets: [
     presets.node(),
-    presets.react(),
     presets.typescript(),
     presets.imports({
       sort: {
@@ -16,5 +15,5 @@ module.exports = configure({
       tabWidth: 2,
       quoteProps: "consistent",
     }),
-  ],
+  ]
 });

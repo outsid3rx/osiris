@@ -1,5 +1,6 @@
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
@@ -7,6 +8,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),
     VitePWA({
       registerType: 'prompt',
       injectRegister: false,
@@ -46,6 +48,7 @@ export default defineConfig({
       '~widgets': path.resolve(__dirname, './src/widgets'),
       '~pages': path.resolve(__dirname, './src/pages'),
       '~app': path.resolve(__dirname, './src/app'),
+      '@': path.resolve(__dirname, './src'),
     },
   },
   server: {
