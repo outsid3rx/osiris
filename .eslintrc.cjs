@@ -15,5 +15,12 @@ module.exports = configure({
       tabWidth: 2,
       quoteProps: "consistent",
     }),
-  ]
+  ],
+  extend: {
+    plugins: ['osiris'],
+    rules: {
+      'osiris/no-wrong-api-client-import-path': 'error',
+      'osiris/no-import-extension': 'error'
+    }
+  }
 });

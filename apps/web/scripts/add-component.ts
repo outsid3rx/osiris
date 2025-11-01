@@ -16,7 +16,7 @@ const main = async () => {
   );
   const components = value.split(" ")
 
-  await exec(`npx shadcn@latest add ${value}`)
+  await exec(`npx shadcn@latest add ${value} -y`)
   await exec("yarn install")
   await exec(
     `eslint ${components.map((component) => `./src/shared/shadcn/components/ui/${component}.tsx`).join(" ")} --fix`,

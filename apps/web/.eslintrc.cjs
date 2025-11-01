@@ -9,9 +9,15 @@ module.exports = {
       presets.typescript({
         tsconfig: "./tsconfig.app.json",
       }),
-    ],
+    ]
   }),
   overrides: [
+    {
+      files: ['./src/**/*.{ts,tsx}'],
+      rules: {
+        "import-x/no-default-export": "off",
+      },
+    },
     {
       files: ["./src/**/*.tsx"],
       rules: {
@@ -21,8 +27,7 @@ module.exports = {
     {
       files: ["./src/PWABadge.tsx"],
       rules: {
-        "import-x/no-unresolved": "off",
-        "import-x/no-default-export": "off",
+        "import-x/no-unresolved": "off"
       },
     },
     {

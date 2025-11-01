@@ -5,7 +5,12 @@
   "repository": "git@github.com:outsid3rx/osiris.git",
   "author": "Max Zernyaev <winterzz@internet.ru>",
   "scripts": {
-    "lint:server": "cd ./apps/server && yarn lint"
+    "lint:server": "yarn workspace @osiris/server lint",
+    "lint:web": "yarn workspace @osiris/web lint",
+    "prisma:dev-server": "yarn workspace @osiris/server prisma:dev-server",
+    "prisma:studio": "yarn workspace @osiris/server prisma:studio",
+    "dev:server": "yarn workspace @osiris/server start:dev",
+    "dev:web": "yarn workspace @osiris/web dev"
   },
   "license": "MIT",
   "private": true,

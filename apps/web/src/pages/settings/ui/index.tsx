@@ -1,7 +1,7 @@
 import { reatomComponent } from '@reatom/npm-react'
-import { useTranslation } from 'react-i18next'
+import { AnimatePresence } from 'motion/react'
 
-import { initSettings } from '~features/init-settings'
+import { ESettingsPage, settingsPageAtom } from '~pages/settings/model'
 import {
   Button,
   Card,
@@ -10,38 +10,41 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  Input,
-  Label,
-} from '~shared/shadcn/components/ui/'
+} from '~shared/shadcn/components/ui'
+import { LocalSettings, PasswordSettings } from '~widgets/initial-settings/ui'
 
 export const SettingsPage = reatomComponent(({ ctx }) => {
-  const { t } = useTranslation('initial-setup')
-
+  const getPage = () => {
+    switch (ctx.spy(settingsPageAtom)) {
+      case ESettingsPage.Password:
+        return <PasswordSettings />
+      default:
+      case ESettingsPage.Local:
+        return (
+          <LocalSettings
+            onSubmit={() => settingsPageAtom(ctx, ESettingsPage.Password)}
+          />
+        )
+    }
+  }
   return (
-    <Card className="w-full max-w-sm m-auto">
-      <CardHeader>
-        <CardTitle>{t('modal.title')}</CardTitle>
-        <CardDescription>
-          Сейчас нужно установить пароль, который будет использоваться для входа
-          в приложение
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid w-full max-w-sm items-center gap-3">
-          <Label htmlFor="password">Пароль для входа</Label>
-          <Input id="password" type="password" placeholder="Пароль для входа" />
-        </div>
-      </CardContent>
-      <CardFooter>
-        <Button
-          disabled={ctx.spy(initSettings.statusesAtom).isPending}
-          onClick={() => initSettings(ctx, { password: 'admin' })}
-          variant="default"
-          className="w-full"
-        >
-          Далее
-        </Button>
-      </CardFooter>
-    </Card>
+    <main className="m-auto">
+      <Card className="w-sm">
+        <CardHeader>
+          <CardTitle>Login to your account</CardTitle>
+          <CardDescription>
+            Enter your email below to login to your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <AnimatePresence>{getPage()}</AnimatePresence>
+        </CardContent>
+        <CardFooter className="flex-col gap-2">
+          <Button type="submit" form="settings" className="w-full">
+            Продолжить
+          </Button>
+        </CardFooter>
+      </Card>
+    </main>
   )
 })

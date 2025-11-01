@@ -16,8 +16,10 @@ export class SettingsController {
   }
 
   @Post()
-  initSettings(@Body() body: SettingsCreatePayload) {
-    return this.settingsService.createInitialSettings(body)
+  async initSettings(@Body() body: SettingsCreatePayload) {
+    await this.settingsService.createInitialSettings(body)
+
+    return { success: true }
   }
 
   @Patch()

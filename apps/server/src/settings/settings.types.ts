@@ -1,8 +1,14 @@
-import { Settings } from '@prisma/client'
+import * as z from 'zod'
 
-export type SettingsUpdatePayload = Partial<
-  Omit<Settings, 'id' | 'passwordHash'>
->
-export type SettingsCreatePayload = Omit<Settings, 'id' | 'passwordHash'> & {
-  password: string
-}
+import { SettingsSchema } from '../shared/zod/schemas'
+
+export const SettingsUpdateSchema = SettingsSchema.omit({
+  id: true,
+  passwordHash: true,
+})
+export const SettingsCreateSchema = SettingsUpdateSchema.extend({
+  password: z.string().min(8).max(16),
+})
+
+export type SettingsUpdatePayload = z.infer<typeof SettingsUpdateSchema>
+export type SettingsCreatePayload = z.infer<typeof SettingsCreateSchema>

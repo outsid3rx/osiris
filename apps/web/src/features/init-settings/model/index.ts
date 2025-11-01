@@ -1,8 +1,14 @@
 import { reatomAsync, withStatusesAtom } from '@reatom/framework'
 
-import { SettingsCreatePayload } from '~server/settings/settings.types.ts'
+import { settingsAtom } from '~entities/settings'
+import { SettingsCreatePayload } from '~server/settings/settings.types'
 import { apiClient } from '~shared/api'
 
-export const initSettings = reatomAsync((_ctx, data: SettingsCreatePayload) => {
-  return apiClient.SettingsController.initSettings({ body: data })
-}).pipe(withStatusesAtom())
+export const initSettings = reatomAsync(
+  async (ctx, data: SettingsCreatePayload) => {
+    await ctx.schedule(() =>
+      apiClient.SettingsController.initSettings({ body: data }),
+    )
+    settingsAtom.cacheAtom.invalidate(ctx)
+  },
+).pipe(withStatusesAtom())
