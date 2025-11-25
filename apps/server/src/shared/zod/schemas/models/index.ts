@@ -3,5 +3,6 @@
  * Auto-generated - do not edit manually
  */
 
-export { SettingsSchema } from './Settings.schema';
+export { UserSchema } from './User.schema';
+export { OAuthAccountSchema } from './OAuthAccount.schema';
 export { WorkflowSchema } from './Workflow.schema';

@@ -12,13 +12,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Settings {
-  id           String @id @default(cuid())
-  passwordHash String
+model User {
+  id        String @id @default(cuid())
+  email     String @unique
+  name      String?
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  oauthAccount OAuthAccount?
+  workflows      Workflow[]
+}
+
+model OAuthAccount {
+  id         String   @id @default(cuid())
+  provider   String
+  providerId String
+  email      String
+  name       String?
+  avatar     String?
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, providerId])
 }
 
 model Workflow {
-  id      String @id @default(cuid())
-  name    String
-  content Json
+  id        String @id @default(cuid())
+  name      String
+  content   Json
+  userId    String
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

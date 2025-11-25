@@ -3,5 +3,6 @@
  * Auto-generated - do not edit manually
  */
 
-export { SettingsModelSchema } from './Settings.pure';
+export { UserModelSchema } from './User.pure';
+export { OAuthAccountModelSchema } from './OAuthAccount.pure';
 export { WorkflowModelSchema } from './Workflow.pure';

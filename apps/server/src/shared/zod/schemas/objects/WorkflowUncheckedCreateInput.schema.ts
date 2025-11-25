@@ -11,7 +11,9 @@ const jsonSchema: any = z.lazy(() =>
 const makeSchema = () => z.object({
   id: z.string().optional(),
   name: z.string(),
-  content: z.union([JsonNullValueInputSchema, jsonSchema])
+  content: z.union([JsonNullValueInputSchema, jsonSchema]),
+  userId: z.string(),
+  createdAt: z.coerce.date().optional()
 }).strict();
 export const WorkflowUncheckedCreateInputObjectSchema: z.ZodType<Prisma.WorkflowUncheckedCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.WorkflowUncheckedCreateInput>;
 export const WorkflowUncheckedCreateInputObjectZodSchema = makeSchema();

@@ -1,14 +1,22 @@
-import path from 'node:path';
-import react from '@vitejs/plugin-react';
-import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from 'vite';
-import { VitePWA } from 'vite-plugin-pwa';
+import path from 'node:path'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+import svg from '@neodx/svg/vite'
+import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    svg({
+      inputRoot: 'src/shared/ui/icons',
+      output: 'public/sprites',
+      resetColors: {
+        include: ['./src/shared/ui/icons/*-auth.svg'],
+      }
+    }),
     VitePWA({
       registerType: 'prompt',
       injectRegister: false,
@@ -59,4 +67,4 @@ export default defineConfig({
       },
     },
   },
-});
+})

@@ -1,2 +1,2 @@
+export * from './auth-settings'
 export * from './local-settings'
-export * from './password-settings'

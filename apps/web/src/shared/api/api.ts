@@ -1,20 +1,24 @@
 import type { KyInstance } from 'ky'
 import type { AbstractApiMethod } from 'revortex'
 
-import { SettingsController } from '~server/settings/settings.controller'
+import { AuthController } from '~server/auth/auth.controller'
 
 export namespace Api {
-  export namespace SettingsController {
-    export interface IsFirstSetup {
-      Return: Awaited<ReturnType<SettingsController['isFirstSetup']>>
+  export namespace AuthController {
+    export interface GoogleLogin {
+      Return: Awaited<ReturnType<AuthController['googleLogin']>>
     }
-    export interface InitSettings {
-      Body: Parameters<SettingsController['initSettings']>[0]
-      Return: Awaited<ReturnType<SettingsController['initSettings']>>
+    export interface GoogleLoginCallback {
+      Return: Awaited<ReturnType<AuthController['googleLoginCallback']>>
     }
-    export interface UpdateSettings {
-      Body: Parameters<SettingsController['updateSettings']>[0]
-      Return: Awaited<ReturnType<SettingsController['updateSettings']>>
+    export interface YandexLogin {
+      Return: Awaited<ReturnType<AuthController['yandexLogin']>>
+    }
+    export interface YandexLoginCallback {
+      Return: Awaited<ReturnType<AuthController['yandexLoginCallback']>>
+    }
+    export interface GetProfile {
+      Return: Awaited<ReturnType<AuthController['getProfile']>>
     }
   }
 }
@@ -32,31 +36,31 @@ export function createApi(
   ) => Promise<T['Return']>,
 ) {
   return {
-    SettingsController: {
-      isFirstSetup: () =>
-        apiCallWrapper<Api.SettingsController.IsFirstSetup>(kyInstance, {
-          url: 'api/settings/check',
+    AuthController: {
+      googleLogin: () =>
+        apiCallWrapper<Api.AuthController.GoogleLogin>(kyInstance, {
+          url: '/api/auth/google',
           method: 'get',
         }),
-      initSettings: ({
-        body,
-      }: {
-        body: Api.SettingsController.InitSettings['Body']
-      }) =>
-        apiCallWrapper<Api.SettingsController.InitSettings>(kyInstance, {
-          body,
-          url: 'api/settings',
-          method: 'post',
+      googleLoginCallback: () =>
+        apiCallWrapper<Api.AuthController.GoogleLoginCallback>(kyInstance, {
+          url: '/api/auth/google/callback',
+          method: 'get',
         }),
-      updateSettings: ({
-        body,
-      }: {
-        body: Api.SettingsController.UpdateSettings['Body']
-      }) =>
-        apiCallWrapper<Api.SettingsController.UpdateSettings>(kyInstance, {
-          body,
-          url: 'api/settings',
-          method: 'patch',
+      yandexLogin: () =>
+        apiCallWrapper<Api.AuthController.YandexLogin>(kyInstance, {
+          url: '/api/auth/yandex',
+          method: 'get',
+        }),
+      yandexLoginCallback: () =>
+        apiCallWrapper<Api.AuthController.YandexLoginCallback>(kyInstance, {
+          url: '/api/auth/yandex/callback',
+          method: 'get',
+        }),
+      getProfile: () =>
+        apiCallWrapper<Api.AuthController.GetProfile>(kyInstance, {
+          url: '/api/auth/me',
+          method: 'get',
         }),
     },
   }

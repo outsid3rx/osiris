@@ -1,0 +1,1 @@
+export { logOutAction } from './model'

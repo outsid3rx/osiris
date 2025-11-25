@@ -6,6 +6,15 @@ import * as z from 'zod'
 import { useTheme } from '~app/providers'
 import { useLanguageSwitcher } from '~features/language-switcher'
 
+export const useGetAuthRedirect = () => {
+  return useCallback(
+    (provider: 'google' | 'yandex') => () => {
+      window.location.replace(`/api/auth/${provider}`)
+    },
+    [],
+  )
+}
+
 export const useLocalSettings = () => {
   const { setTheme } = useTheme()
 

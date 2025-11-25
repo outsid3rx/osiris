@@ -11,13 +11,21 @@ import { WorkflowScalarFieldEnumSchema } from './enums/WorkflowScalarFieldEnum.s
 export const WorkflowFindFirstSelectSchema: z.ZodType<Prisma.WorkflowSelect> = z.object({
     id: z.boolean().optional(),
     name: z.boolean().optional(),
-    content: z.boolean().optional()
+    content: z.boolean().optional(),
+    userId: z.boolean().optional(),
+    user: z.boolean().optional(),
+    createdAt: z.boolean().optional(),
+    updatedAt: z.boolean().optional()
   }).strict() as unknown as z.ZodType<Prisma.WorkflowSelect>;
 
 export const WorkflowFindFirstSelectZodSchema = z.object({
     id: z.boolean().optional(),
     name: z.boolean().optional(),
-    content: z.boolean().optional()
+    content: z.boolean().optional(),
+    userId: z.boolean().optional(),
+    user: z.boolean().optional(),
+    createdAt: z.boolean().optional(),
+    updatedAt: z.boolean().optional()
   }).strict();
 
 export const WorkflowFindFirstSchema: z.ZodType<Prisma.WorkflowFindFirstArgs> = z.object({ select: WorkflowFindFirstSelectSchema.optional(),  orderBy: z.union([WorkflowOrderByWithRelationInputObjectSchema, WorkflowOrderByWithRelationInputObjectSchema.array()]).optional(), where: WorkflowWhereInputObjectSchema.optional(), cursor: WorkflowWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([WorkflowScalarFieldEnumSchema, WorkflowScalarFieldEnumSchema.array()]).optional() }).strict() as unknown as z.ZodType<Prisma.WorkflowFindFirstArgs>;

@@ -1,15 +1,22 @@
 import { reatomComponent } from '@reatom/npm-react'
+import { clsx } from 'clsx'
 
-import { RouteProvider, ThemeProvider } from '~app/providers'
-import { settingsAtom } from '~entities/settings'
-import { SettingsPage } from '~pages/settings'
+import {
+  anonymousRouter,
+  authorizedRouter,
+  RouteProvider,
+  ThemeProvider,
+} from '~app/providers'
+import { authAtom } from '~entities/auth'
 
 export const App = reatomComponent(({ ctx }) => {
-  const { isFirstSetup } = ctx.spy(settingsAtom.dataAtom)
+  const profile = ctx.spy(authAtom.dataAtom)
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      {isFirstSetup ? <SettingsPage /> : <RouteProvider />}
+      <main className={clsx({ 'm-auto': !profile })}>
+        <RouteProvider router={profile ? authorizedRouter : anonymousRouter} />
+      </main>
     </ThemeProvider>
   )
 })

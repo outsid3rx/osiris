@@ -3,5 +3,6 @@
  * Auto-generated - do not edit manually
  */
 
-export { SettingsInputSchema } from './Settings.input';
+export { UserInputSchema } from './User.input';
+export { OAuthAccountInputSchema } from './OAuthAccount.input';
 export { WorkflowInputSchema } from './Workflow.input';
