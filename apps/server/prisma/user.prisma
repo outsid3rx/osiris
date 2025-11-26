@@ -13,11 +13,11 @@ model User {
 }
 
 model Team {
-  id          String       @id @default(cuid())
-  name        String
-  description String?
+  id           String        @id @default(cuid())
+  name         String
+  description  String?
   teamMembers  TeamMember[]
-  workflows   Workflow[]
+  workflows    Workflow[]
   joinRequests JoinRequest[]
 }
 
