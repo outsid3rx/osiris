@@ -1,0 +1,54 @@
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  oauthAccount OAuthAccount?
+  workflows    Workflow[]
+  teams        TeamMember[]
+  joinRequests JoinRequest[]
+}
+
+model Team {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  teamMembers  TeamMember[]
+  workflows   Workflow[]
+  joinRequests JoinRequest[]
+}
+
+model TeamMember {
+  id     String @id @default(cuid())
+  userId String
+  teamId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model JoinRequest {
+  id     String @id @default(cuid())
+  userId String
+  teamId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model OAuthAccount {
+  id         String  @id @default(cuid())
+  provider   String
+  providerId String
+  email      String
+  name       String?
+  avatar     String?
+  userId     String  @unique
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, providerId])
+}

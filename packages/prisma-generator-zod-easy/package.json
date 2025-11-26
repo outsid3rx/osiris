@@ -1,0 +1,26 @@
+{
+  "name": "prisma-generator-zod-easy",
+  "version": "1.0.0",
+  "main": "./dist/generator.js",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "prisma-generator-zod-easy": "./dist/bin.js"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/generator-helper": "^7.0.1",
+    "ts-morph": "^27.0.2"
+  },
+  "devDependencies": {
+    "@prisma/client": "^7.0.1",
+    "@total-typescript/ts-reset": "^0.6.1",
+    "prisma": "^7.0.1",
+    "type-fest": "^5.2.0",
+    "typescript": "^5.9.3"
+  }
+}
