@@ -10,6 +10,7 @@ export async function onGenerate(options: GeneratorOptions) {
   const outputDir = options.generator.output?.value ?? './shared/zod'
   mkdirSync(outputDir, { recursive: true })
 
+  const enums = options.dmmf.datamodel.enums.map(({ name }) => name)
   const dataModel = options.dmmf.datamodel
   if (!isEmpty(options.dmmf.datamodel.enums)) {
     const enumsGenerator = new TsGenerator(join(outputDir, FILENAMES.ENUMS))
@@ -25,11 +26,20 @@ export async function onGenerate(options: GeneratorOptions) {
   const modelsGenerator = new TsGenerator(join(outputDir, FILENAMES.MODELS))
   modelsGenerator.addZodImport()
 
+  const enumsImport = new Set<string>()
   for (const schemaModel of dataModel.models) {
-    modelsGenerator.addPureModel(schemaModel)
-    modelsGenerator.addCreateModel(schemaModel)
-    modelsGenerator.addUpdateModel(schemaModel)
+    modelsGenerator
+      .addPureModel(schemaModel, enums)
+      .forEach((name) => enumsImport.add(name))
+    modelsGenerator
+      .addCreateModel(schemaModel, enums)
+      .forEach((name) => enumsImport.add(name))
+    modelsGenerator
+      .addUpdateModel(schemaModel, enums)
+      .forEach((name) => enumsImport.add(name))
   }
+
+  modelsGenerator.addEnumsImport([...enumsImport])
 
   await modelsGenerator.save()
 

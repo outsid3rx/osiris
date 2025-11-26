@@ -14,12 +14,14 @@ import {
   SyntaxKind,
 } from 'typescript'
 
-import { PRISMA_TYPES, PRISMA_ZOD_TYPES_MAP } from '../constants'
+import { FILENAMES, PRISMA_TYPES, PRISMA_ZOD_TYPES_MAP } from '../constants'
+import { isEmpty } from '../utils'
 
 interface IAddModelOptions {
   forceOptionalFields: boolean
   skipIdField: boolean
   modelSuffix: string
+  enums: string[]
 }
 
 export class TsGenerator {
@@ -121,7 +123,7 @@ export class TsGenerator {
             createCallExpression(
               createPropertyAccessExpression(
                 createIdentifier('z'),
-                createIdentifier('enum'),
+                createIdentifier('nativeEnum'),
               ),
               [],
               [createIdentifier(enumModel.name)],
@@ -153,8 +155,10 @@ export class TsGenerator {
 
   public addPureModel(
     model: ArrayElement<GeneratorOptions['dmmf']['datamodel']['models']>,
+    enums: string[],
   ) {
     return this.addModel(model, {
+      enums,
       modelSuffix: '',
       skipIdField: false,
       forceOptionalFields: false,
@@ -163,8 +167,10 @@ export class TsGenerator {
 
   public addCreateModel(
     model: ArrayElement<GeneratorOptions['dmmf']['datamodel']['models']>,
+    enums: string[],
   ) {
     return this.addModel(model, {
+      enums,
       modelSuffix: 'Create',
       skipIdField: true,
       forceOptionalFields: false,
@@ -173,8 +179,10 @@ export class TsGenerator {
 
   public addUpdateModel(
     model: ArrayElement<GeneratorOptions['dmmf']['datamodel']['models']>,
+    enums: string[],
   ) {
     return this.addModel(model, {
+      enums,
       modelSuffix: 'Update',
       skipIdField: true,
       forceOptionalFields: true,
@@ -209,7 +217,7 @@ export class TsGenerator {
 
   private addModel(
     model: ArrayElement<GeneratorOptions['dmmf']['datamodel']['models']>,
-    { modelSuffix, forceOptionalFields, skipIdField }: IAddModelOptions,
+    { modelSuffix, forceOptionalFields, skipIdField, enums }: IAddModelOptions,
   ) {
     const {
       createVariableDeclaration,
@@ -227,6 +235,8 @@ export class TsGenerator {
       createVariableDeclarationList,
     } = factory
 
+    const enumsImport: string[] = []
+
     const modelNameIdentifier = createIdentifier(
       `${model.name}Model${modelSuffix}Schema`,
     )
@@ -236,29 +246,35 @@ export class TsGenerator {
       const { isGenerated, isId, isRequired, type, name } = field
       if (
         isGenerated ||
-        !PRISMA_TYPES.includes(type) ||
+        (!PRISMA_TYPES.includes(type) && !enums.includes(type)) ||
         (skipIdField && isId)
       ) {
         continue
       }
 
-      const zodTypeCallExpression = createCallExpression(
-        createPropertyAccessExpression(
-          createIdentifier('z'),
-          createIdentifier(PRISMA_ZOD_TYPES_MAP[type] || 'any'),
-        ),
-        [],
-        [],
-      )
+      if (enums.includes(type)) {
+        enumsImport.push(type)
+      }
+
+      const zodTypeExpression = enums.includes(type)
+        ? createIdentifier(`${type}Enum`)
+        : createCallExpression(
+            createPropertyAccessExpression(
+              createIdentifier('z'),
+              createIdentifier(PRISMA_ZOD_TYPES_MAP[type] || 'any'),
+            ),
+            [],
+            [],
+          )
 
       properties.push(
         createPropertyAssignment(
           createIdentifier(name),
           isRequired && !forceOptionalFields
-            ? zodTypeCallExpression
+            ? zodTypeExpression
             : createCallExpression(
                 createPropertyAccessExpression(
-                  zodTypeCallExpression,
+                  zodTypeExpression,
                   createIdentifier('nullable'),
                 ),
                 [],
@@ -316,7 +332,46 @@ export class TsGenerator {
         this.tsSource,
       ),
     )
-    return this
+
+    return enumsImport
+  }
+
+  public addEnumsImport(enums: string[]) {
+    const {
+      createImportDeclaration,
+      createImportClause,
+      createNamedImports,
+      createStringLiteral,
+      createImportSpecifier,
+      createIdentifier,
+    } = factory
+
+    if (!isEmpty(enums)) {
+      this.sourceFile.insertText(
+        this.sourceFile.getFullText().length,
+        this.printer.printNode(
+          EmitHint.Unspecified,
+          createImportDeclaration(
+            [],
+            createImportClause(
+              undefined,
+              undefined,
+              createNamedImports(
+                enums.map((name) =>
+                  createImportSpecifier(
+                    false,
+                    undefined,
+                    createIdentifier(`${name}Enum`),
+                  ),
+                ),
+              ),
+            ),
+            createStringLiteral(FILENAMES.ENUMS),
+          ),
+          this.tsSource,
+        ),
+      )
+    }
   }
 
   public save() {
