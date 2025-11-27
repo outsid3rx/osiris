@@ -1,6 +1,6 @@
 {
   "name": "prisma-generator-zod-easy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/generator.js",
   "author": "Max Zernyaev <winterzz@internet.ru>",
   "license": "MIT",
