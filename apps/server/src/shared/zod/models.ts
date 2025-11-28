@@ -5,73 +5,46 @@ export const UserModelSchema = z.object({
   email: z.string(),
   name: z.string().nullable(),
   avatar: z.string().nullable(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
 })
+export const UserModelCreateSchema = UserModelSchema.omit({ id: true })
+export const UserModelUpdateSchema = UserModelCreateSchema.partial()
 export type UserType = z.infer<typeof UserModelSchema>
-export const UserModelCreateSchema = z.object({
-  email: z.string(),
-  name: z.string().nullable(),
-  avatar: z.string().nullable(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-})
 export type UserCreateType = z.infer<typeof UserModelCreateSchema>
-export const UserModelUpdateSchema = z.object({
-  email: z.string().nullable(),
-  name: z.string().nullable(),
-  avatar: z.string().nullable(),
-  createdAt: z.date().nullable(),
-  updatedAt: z.date().nullable(),
-})
 export type UserUpdateType = z.infer<typeof UserModelUpdateSchema>
 export const TeamModelSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string().nullable(),
 })
+export const TeamModelCreateSchema = TeamModelSchema.omit({ id: true })
+export const TeamModelUpdateSchema = TeamModelCreateSchema.partial()
 export type TeamType = z.infer<typeof TeamModelSchema>
-export const TeamModelCreateSchema = z.object({
-  name: z.string(),
-  description: z.string().nullable(),
-})
 export type TeamCreateType = z.infer<typeof TeamModelCreateSchema>
-export const TeamModelUpdateSchema = z.object({
-  name: z.string().nullable(),
-  description: z.string().nullable(),
-})
 export type TeamUpdateType = z.infer<typeof TeamModelUpdateSchema>
 export const TeamMemberModelSchema = z.object({
   id: z.string(),
   userId: z.string(),
   teamId: z.string(),
 })
+export const TeamMemberModelCreateSchema = TeamMemberModelSchema.omit({
+  id: true,
+})
+export const TeamMemberModelUpdateSchema = TeamMemberModelCreateSchema.partial()
 export type TeamMemberType = z.infer<typeof TeamMemberModelSchema>
-export const TeamMemberModelCreateSchema = z.object({
-  userId: z.string(),
-  teamId: z.string(),
-})
 export type TeamMemberCreateType = z.infer<typeof TeamMemberModelCreateSchema>
-export const TeamMemberModelUpdateSchema = z.object({
-  userId: z.string().nullable(),
-  teamId: z.string().nullable(),
-})
 export type TeamMemberUpdateType = z.infer<typeof TeamMemberModelUpdateSchema>
 export const JoinRequestModelSchema = z.object({
   id: z.string(),
   userId: z.string(),
   teamId: z.string(),
 })
+export const JoinRequestModelCreateSchema = JoinRequestModelSchema.omit({
+  id: true,
+})
+export const JoinRequestModelUpdateSchema =
+  JoinRequestModelCreateSchema.partial()
 export type JoinRequestType = z.infer<typeof JoinRequestModelSchema>
-export const JoinRequestModelCreateSchema = z.object({
-  userId: z.string(),
-  teamId: z.string(),
-})
 export type JoinRequestCreateType = z.infer<typeof JoinRequestModelCreateSchema>
-export const JoinRequestModelUpdateSchema = z.object({
-  userId: z.string().nullable(),
-  teamId: z.string().nullable(),
-})
 export type JoinRequestUpdateType = z.infer<typeof JoinRequestModelUpdateSchema>
 export const OAuthAccountModelSchema = z.object({
   id: z.string(),
@@ -81,33 +54,16 @@ export const OAuthAccountModelSchema = z.object({
   name: z.string().nullable(),
   avatar: z.string().nullable(),
   userId: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
 })
+export const OAuthAccountModelCreateSchema = OAuthAccountModelSchema.omit({
+  id: true,
+})
+export const OAuthAccountModelUpdateSchema =
+  OAuthAccountModelCreateSchema.partial()
 export type OAuthAccountType = z.infer<typeof OAuthAccountModelSchema>
-export const OAuthAccountModelCreateSchema = z.object({
-  provider: z.string(),
-  providerId: z.string(),
-  email: z.string(),
-  name: z.string().nullable(),
-  avatar: z.string().nullable(),
-  userId: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-})
 export type OAuthAccountCreateType = z.infer<
   typeof OAuthAccountModelCreateSchema
 >
-export const OAuthAccountModelUpdateSchema = z.object({
-  provider: z.string().nullable(),
-  providerId: z.string().nullable(),
-  email: z.string().nullable(),
-  name: z.string().nullable(),
-  avatar: z.string().nullable(),
-  userId: z.string().nullable(),
-  createdAt: z.date().nullable(),
-  updatedAt: z.date().nullable(),
-})
 export type OAuthAccountUpdateType = z.infer<
   typeof OAuthAccountModelUpdateSchema
 >
@@ -116,23 +72,9 @@ export const WorkflowModelSchema = z.object({
   name: z.string(),
   authorId: z.string(),
   teamId: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
 })
+export const WorkflowModelCreateSchema = WorkflowModelSchema.omit({ id: true })
+export const WorkflowModelUpdateSchema = WorkflowModelCreateSchema.partial()
 export type WorkflowType = z.infer<typeof WorkflowModelSchema>
-export const WorkflowModelCreateSchema = z.object({
-  name: z.string(),
-  authorId: z.string(),
-  teamId: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-})
 export type WorkflowCreateType = z.infer<typeof WorkflowModelCreateSchema>
-export const WorkflowModelUpdateSchema = z.object({
-  name: z.string().nullable(),
-  authorId: z.string().nullable(),
-  teamId: z.string().nullable(),
-  createdAt: z.date().nullable(),
-  updatedAt: z.date().nullable(),
-})
 export type WorkflowUpdateType = z.infer<typeof WorkflowModelUpdateSchema>

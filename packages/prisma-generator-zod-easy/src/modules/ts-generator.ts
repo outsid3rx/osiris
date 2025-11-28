@@ -6,6 +6,7 @@ import {
   createSourceFile,
   EmitHint,
   factory,
+  Identifier,
   NewLineKind,
   NodeFlags,
   PropertyAssignment,
@@ -18,10 +19,8 @@ import { FILENAMES, PRISMA_TYPES, PRISMA_ZOD_TYPES_MAP } from '../constants'
 import { isEmpty } from '../utils'
 
 interface IAddModelOptions {
-  forceOptionalFields: boolean
-  skipIdField: boolean
-  modelSuffix: string
   enums: string[]
+  ignoredFields?: string[]
 }
 
 export class TsGenerator {
@@ -153,42 +152,6 @@ export class TsGenerator {
     return this
   }
 
-  public addPureModel(
-    model: ArrayElement<GeneratorOptions['dmmf']['datamodel']['models']>,
-    enums: string[],
-  ) {
-    return this.addModel(model, {
-      enums,
-      modelSuffix: '',
-      skipIdField: false,
-      forceOptionalFields: false,
-    })
-  }
-
-  public addCreateModel(
-    model: ArrayElement<GeneratorOptions['dmmf']['datamodel']['models']>,
-    enums: string[],
-  ) {
-    return this.addModel(model, {
-      enums,
-      modelSuffix: 'Create',
-      skipIdField: true,
-      forceOptionalFields: false,
-    })
-  }
-
-  public addUpdateModel(
-    model: ArrayElement<GeneratorOptions['dmmf']['datamodel']['models']>,
-    enums: string[],
-  ) {
-    return this.addModel(model, {
-      enums,
-      modelSuffix: 'Update',
-      skipIdField: true,
-      forceOptionalFields: true,
-    })
-  }
-
   public addBarrelExport(fullFilePaths: string[]) {
     const { createExportDeclaration, createStringLiteral } = factory
 
@@ -215,9 +178,9 @@ export class TsGenerator {
     })
   }
 
-  private addModel(
+  public addModel(
     model: ArrayElement<GeneratorOptions['dmmf']['datamodel']['models']>,
-    { modelSuffix, forceOptionalFields, skipIdField, enums }: IAddModelOptions,
+    { enums, ignoredFields = ['createdAt', 'updatedAt'] }: IAddModelOptions,
   ) {
     const {
       createVariableDeclaration,
@@ -233,21 +196,26 @@ export class TsGenerator {
       createPropertyAccessExpression,
       createTypeQueryNode,
       createVariableDeclarationList,
+      createTrue,
     } = factory
 
     const enumsImport: string[] = []
 
-    const modelNameIdentifier = createIdentifier(
-      `${model.name}Model${modelSuffix}Schema`,
+    const modelNameIdentifier = createIdentifier(`${model.name}ModelSchema`)
+    const modelCreateNameIdentifier = createIdentifier(
+      `${model.name}ModelCreateSchema`,
+    )
+    const modelUpdateNameIdentifier = createIdentifier(
+      `${model.name}ModelUpdateSchema`,
     )
 
     const properties: PropertyAssignment[] = []
     for (const field of model.fields) {
-      const { isGenerated, isId, isRequired, type, name } = field
+      const { isGenerated, isRequired, type, name } = field
       if (
-        isGenerated ||
         (!PRISMA_TYPES.includes(type) && !enums.includes(type)) ||
-        (skipIdField && isId)
+        ignoredFields.includes(name) ||
+        isGenerated
       ) {
         continue
       }
@@ -270,7 +238,7 @@ export class TsGenerator {
       properties.push(
         createPropertyAssignment(
           createIdentifier(name),
-          isRequired && !forceOptionalFields
+          isRequired
             ? zodTypeExpression
             : createCallExpression(
                 createPropertyAccessExpression(
@@ -305,31 +273,83 @@ export class TsGenerator {
         NodeFlags.Const,
       ),
     )
-
-    const typeAliasDeclaration = createTypeAliasDeclaration(
+    const createModelStatement = createVariableStatement(
       [createModifier(SyntaxKind.ExportKeyword)],
-      createIdentifier(`${model.name}${modelSuffix}Type`),
-      [],
-      createTypeReferenceNode(
-        createQualifiedName(createIdentifier('z'), createIdentifier('infer')),
-        [createTypeQueryNode(modelNameIdentifier)],
+      createVariableDeclarationList(
+        [
+          createVariableDeclaration(
+            modelCreateNameIdentifier,
+            undefined,
+            undefined,
+            createCallExpression(
+              createPropertyAccessExpression(
+                modelNameIdentifier,
+                createIdentifier('omit'),
+              ),
+              [],
+              [
+                createObjectLiteralExpression([
+                  createPropertyAssignment(
+                    createIdentifier('id'),
+                    createTrue(),
+                  ),
+                ]),
+              ],
+            ),
+          ),
+        ],
+        NodeFlags.Const,
+      ),
+    )
+    const updateModelStatement = createVariableStatement(
+      [createModifier(SyntaxKind.ExportKeyword)],
+      createVariableDeclarationList(
+        [
+          createVariableDeclaration(
+            modelUpdateNameIdentifier,
+            undefined,
+            undefined,
+            createCallExpression(
+              createPropertyAccessExpression(
+                modelCreateNameIdentifier,
+                createIdentifier('partial'),
+              ),
+              [],
+              [],
+            ),
+          ),
+        ],
+        NodeFlags.Const,
       ),
     )
 
-    this.sourceFile.insertText(
-      this.sourceFile.getFullText().length,
-      this.printer.printNode(
-        EmitHint.Unspecified,
-        modelStatement,
-        this.tsSource,
+    const typesDeclarations = (
+      [
+        [`${model.name}Type`, modelNameIdentifier],
+        [`${model.name}CreateType`, modelCreateNameIdentifier],
+        [`${model.name}UpdateType`, modelUpdateNameIdentifier],
+      ] as [string, Identifier][]
+    ).map(([name, identifier]) =>
+      createTypeAliasDeclaration(
+        [createModifier(SyntaxKind.ExportKeyword)],
+        createIdentifier(name),
+        [],
+        createTypeReferenceNode(
+          createQualifiedName(createIdentifier('z'), createIdentifier('infer')),
+          [createTypeQueryNode(identifier)],
+        ),
       ),
     )
-    this.sourceFile.insertText(
-      this.sourceFile.getFullText().length,
-      this.printer.printNode(
-        EmitHint.Unspecified,
-        typeAliasDeclaration,
-        this.tsSource,
+
+    ;[
+      modelStatement,
+      createModelStatement,
+      updateModelStatement,
+      ...typesDeclarations,
+    ].forEach((statement) =>
+      this.sourceFile.insertText(
+        this.sourceFile.getFullText().length,
+        this.printer.printNode(EmitHint.Unspecified, statement, this.tsSource),
       ),
     )
 

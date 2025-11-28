@@ -29,13 +29,7 @@ export async function onGenerate(options: GeneratorOptions) {
   const enumsImport = new Set<string>()
   for (const schemaModel of dataModel.models) {
     modelsGenerator
-      .addPureModel(schemaModel, enums)
-      .forEach((name) => enumsImport.add(name))
-    modelsGenerator
-      .addCreateModel(schemaModel, enums)
-      .forEach((name) => enumsImport.add(name))
-    modelsGenerator
-      .addUpdateModel(schemaModel, enums)
+      .addModel(schemaModel, { enums })
       .forEach((name) => enumsImport.add(name))
   }
 
