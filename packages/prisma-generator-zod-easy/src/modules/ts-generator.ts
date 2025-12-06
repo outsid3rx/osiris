@@ -98,7 +98,7 @@ export class TsGenerator {
       createVariableDeclarationList(
         [
           createVariableDeclaration(
-            createIdentifier(enumModel.name),
+            createIdentifier(`${enumModel.name}Enum`),
             undefined,
             undefined,
             createAsExpression(
@@ -116,7 +116,7 @@ export class TsGenerator {
       createVariableDeclarationList(
         [
           createVariableDeclaration(
-            createIdentifier(`${enumModel.name}Enum`),
+            createIdentifier(`${enumModel.name}EnumSchema`),
             undefined,
             undefined,
             createCallExpression(
@@ -125,7 +125,7 @@ export class TsGenerator {
                 createIdentifier('nativeEnum'),
               ),
               [],
-              [createIdentifier(enumModel.name)],
+              [createIdentifier(`${enumModel.name}Enum`)],
             ),
           ),
         ],
@@ -225,7 +225,7 @@ export class TsGenerator {
       }
 
       const zodTypeExpression = enums.includes(type)
-        ? createIdentifier(`${type}Enum`)
+        ? createIdentifier(`${type}EnumSchema`)
         : createCallExpression(
             createPropertyAccessExpression(
               createIdentifier('z'),
@@ -381,7 +381,7 @@ export class TsGenerator {
                   createImportSpecifier(
                     false,
                     undefined,
-                    createIdentifier(`${name}Enum`),
+                    createIdentifier(`${name}EnumSchema`),
                   ),
                 ),
               ),
