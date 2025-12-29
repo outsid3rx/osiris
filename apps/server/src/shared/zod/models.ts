@@ -1,5 +1,7 @@
 import * as z from 'zod'
 
+import { MembershipRoleEnumSchema, TeamTypeEnumSchema } from './enums'
+
 export const UserModelSchema = z.object({
   id: z.string(),
   email: z.string(),
@@ -15,6 +17,8 @@ export const TeamModelSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string().nullable(),
+  type: TeamTypeEnumSchema,
+  creatorId: z.string(),
 })
 export const TeamModelCreateSchema = TeamModelSchema.omit({ id: true })
 export const TeamModelUpdateSchema = TeamModelCreateSchema.partial()
@@ -25,6 +29,7 @@ export const TeamMemberModelSchema = z.object({
   id: z.string(),
   userId: z.string(),
   teamId: z.string(),
+  role: MembershipRoleEnumSchema,
 })
 export const TeamMemberModelCreateSchema = TeamMemberModelSchema.omit({
   id: true,

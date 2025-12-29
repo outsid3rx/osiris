@@ -38,6 +38,7 @@ export class AuthController {
       avatar,
     )
 
+    await this.authService.ensurePersonalTeam(user)
     const token = await this.authService.login(user)
 
     res.redirect(
@@ -63,6 +64,7 @@ export class AuthController {
       avatar,
     )
 
+    await this.authService.ensurePersonalTeam(user)
     const token = await this.authService.login(user)
 
     res.redirect(

@@ -10,23 +10,30 @@ model User {
   workflows    Workflow[]
   teams        TeamMember[]
   joinRequests JoinRequest[]
+  createdTeams Team[]
 }
 
 model Team {
   id           String        @id @default(cuid())
   name         String
   description  String?
+  type         TeamType
+  creatorId    String
+  creator      User          @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   teamMembers  TeamMember[]
   workflows    Workflow[]
   joinRequests JoinRequest[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 model TeamMember {
-  id     String @id @default(cuid())
+  id     String         @id @default(cuid())
   userId String
   teamId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  role   MembershipRole
+  user   User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team   Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
 model JoinRequest {
@@ -51,4 +58,14 @@ model OAuthAccount {
   updatedAt DateTime @updatedAt
 
   @@unique([provider, providerId])
+}
+
+enum TeamType {
+  Personal
+  Shared
+}
+
+enum MembershipRole {
+  Admin
+  Member
 }

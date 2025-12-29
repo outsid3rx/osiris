@@ -1,13 +1,18 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
+import { User } from '@prisma/client'
+import { isEmpty } from 'es-toolkit/compat'
 
 import { DbService } from '../db/db.service'
+import { TeamTypeEnum } from '../shared/zod'
+import { TeamService } from '../team/team.service'
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly dbService: DbService,
     private readonly jwtService: JwtService,
+    private readonly teamService: TeamService,
   ) {}
 
   public async validateOAuthLogin(
@@ -33,7 +38,7 @@ export class AuthService {
       return oauthAccount.user
     }
 
-    let user = await this.dbService.user.findUnique({
+    const user = await this.dbService.user.findUnique({
       where: { email },
     })
 
@@ -51,7 +56,7 @@ export class AuthService {
       return user
     }
 
-    user = await this.dbService.user.create({
+    return this.dbService.user.create({
       data: {
         email,
         name,
@@ -67,8 +72,19 @@ export class AuthService {
         },
       },
     })
+  }
 
-    return user
+  public async ensurePersonalTeam(user: User): Promise<void> {
+    const teams = await this.teamService.getUserTeams({ userId: user.id })
+
+    if (isEmpty(teams)) {
+      await this.teamService.createTeam({
+        name: `${user.name}'s Team`,
+        description: 'This is your personal team.',
+        creatorId: user.id,
+        type: TeamTypeEnum.Personal,
+      })
+    }
   }
 
   public async login(

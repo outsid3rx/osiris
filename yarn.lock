@@ -2304,6 +2304,14 @@
     "@noble/hashes" "^2.0.1"
     error-causes "^3.0.2"
 
+"@phenomnomnominal/tsquery@^6.1.4":
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/@phenomnomnominal/tsquery/-/tsquery-6.1.4.tgz#091671c961a9ec9a823711317dfc28cf47bb273d"
+  integrity sha512-3tHlGy/fxjJCHqIV8nelAzbRTNkCUY+k7lqBGKNuQz99H2OKGRt6oU+U2SZs6LYrbOe8mxMFl6kq6gzHapFRkw==
+  dependencies:
+    "@types/esquery" "^1.5.0"
+    esquery "^1.5.0"
+
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
   resolved "https://registry.npmjs.org/@pkgjs/parseargs/-/parseargs-0.11.0.tgz"
@@ -3574,6 +3582,13 @@
   dependencies:
     "@types/estree" "*"
     "@types/json-schema" "*"
+
+"@types/esquery@^1.5.0":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@types/esquery/-/esquery-1.5.4.tgz#ebfd3a3bca6db50446688ba5592d18bb9b807e91"
+  integrity sha512-yYO4Q8H+KJHKW1rEeSzHxcZi90durqYgWVfnh5K6ZADVBjBv2e1NEveYX5yT2bffgN7RqzH3k9930m+i2yBoMA==
+  dependencies:
+    "@types/estree" "*"
 
 "@types/estree@*", "@types/estree@1.0.8", "@types/estree@^1.0.0", "@types/estree@^1.0.8":
   version "1.0.8"
@@ -5926,6 +5941,11 @@ es-toolkit@^1.39.10:
   resolved "https://registry.npmjs.org/es-toolkit/-/es-toolkit-1.40.0.tgz"
   integrity sha512-8o6w0KFmU0CiIl0/Q/BCEOabF2IJaELM1T2PWj6e8KqzHv1gdx+7JtFnDwOx1kJH/isJ5NwlDG1nCr1HrRF94Q==
 
+es-toolkit@^1.42.0:
+  version "1.42.0"
+  resolved "https://registry.yarnpkg.com/es-toolkit/-/es-toolkit-1.42.0.tgz#c9e87c7e2d4759ca26887814e6bc780cf4747fc5"
+  integrity sha512-SLHIyY7VfDJBM8clz4+T2oquwTQxEzu263AyhVK4jREOAwJ+8eebaa4wM3nlvnAqhDrMm2EsA6hWHaQsMPQ1nA==
+
 esbuild@^0.25.0, esbuild@~0.25.0:
   version "0.25.11"
   resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.25.11.tgz"
@@ -6381,7 +6401,7 @@ esprima@^4.0.0, esprima@^4.0.1:
   resolved "https://registry.npmjs.org/esprima/-/esprima-4.0.1.tgz"
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
 
-esquery@^1.4.0, esquery@^1.4.2, esquery@^1.6.0:
+esquery@^1.4.0, esquery@^1.4.2, esquery@^1.5.0, esquery@^1.6.0:
   version "1.6.0"
   resolved "https://registry.npmjs.org/esquery/-/esquery-1.6.0.tgz"
   integrity sha512-ca9pw9fomFcKPvFLXhBKUK90ZvGibiGOvRJNbjljY7s7uq/5YO4BOzcYtJqExdx99rF6aAcnRxHmcUHcz6sQsg==
@@ -9893,11 +9913,12 @@ reusify@^1.0.4:
   resolved "https://registry.npmjs.org/reusify/-/reusify-1.1.0.tgz"
   integrity sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==
 
-revortex@2.0.2-beta.2:
-  version "2.0.2-beta.2"
-  resolved "https://registry.npmjs.org/revortex/-/revortex-2.0.2-beta.2.tgz"
-  integrity sha512-qtwlkkjLUpm1K7XhxS+/0XJ/qy8bXY/Mms2/FwRUxNOi2GNbyS/FJ4Jwfy9RUx160d1Yx5ulDR2dhi0MmpVsRw==
+revortex@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/revortex/-/revortex-2.1.0.tgz#ed02079e1c51050687c4db7910a1a148b61843de"
+  integrity sha512-AmjY7wOOZNSGi1w0/hTveoK7woID+28NdZmO64Ow575gwUTz63rncw5AkvScTZiCj6IJZzLzEcComquQRiKxnA==
   dependencies:
+    "@phenomnomnominal/tsquery" "^6.1.4"
     commander "^12.1.0"
     es-toolkit "^1.39.10"
     ts-morph "^26.0.0"
@@ -10206,7 +10227,7 @@ setprototypeof@1.2.0:
 
 sharp-ico@^0.1.5:
   version "0.1.5"
-  resolved "https://registry.npmjs.org/sharp-ico/-/sharp-ico-0.1.5.tgz"
+  resolved "https://registry.yarnpkg.com/sharp-ico/-/sharp-ico-0.1.5.tgz#5d263558adfb00903313db9403e20dc66ffcfa5b"
   integrity sha512-a3jODQl82NPp1d5OYb0wY+oFaPk7AvyxipIowCHk7pBsZCWgbe0yAkU2OOXdoH0ENyANhyOQbs9xkAiRHcF02Q==
   dependencies:
     decode-ico "*"
@@ -10215,7 +10236,7 @@ sharp-ico@^0.1.5:
 
 sharp@*, sharp@^0.32.6:
   version "0.32.6"
-  resolved "https://registry.npmjs.org/sharp/-/sharp-0.32.6.tgz"
+  resolved "https://registry.yarnpkg.com/sharp/-/sharp-0.32.6.tgz#6ad30c0b7cd910df65d5f355f774aa4fce45732a"
   integrity sha512-KyLTWwgcR9Oe4d9HwCwNM2l7+J0dUQwn/yf7S0EnTtb0eVS4RxO0eUSvxPtzT4F3SY+C4K6fqdv/DO27sJ/v/w==
   dependencies:
     color "^4.2.3"

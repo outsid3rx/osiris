@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 
 import { AuthModule } from './auth/auth.module'
 import { DbModule } from './db/db.module'
-import { TeamModule } from './team/team.module';
+import { TeamModule } from './team/team.module'
 
 @Module({
   imports: [DbModule, AuthModule, TeamModule],

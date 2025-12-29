@@ -1,0 +1,1 @@
+export { SidebarTeamsList } from './ui'

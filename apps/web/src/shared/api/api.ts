@@ -1,7 +1,8 @@
 import type { KyInstance } from 'ky'
 import type { AbstractApiMethod } from 'revortex'
 
-import { AuthController } from '~server/auth/auth.controller'
+import type { AuthController } from '~server/auth/auth.controller'
+import type { TeamController } from '~server/team/team.controller'
 
 export namespace Api {
   export namespace AuthController {
@@ -19,6 +20,11 @@ export namespace Api {
     }
     export interface GetProfile {
       Return: Awaited<ReturnType<AuthController['getProfile']>>
+    }
+  }
+  export namespace TeamController {
+    export interface GetUserTeams {
+      Return: Awaited<ReturnType<TeamController['getUserTeams']>>
     }
   }
 }
@@ -60,6 +66,13 @@ export function createApi(
       getProfile: () =>
         apiCallWrapper<Api.AuthController.GetProfile>(kyInstance, {
           url: '/api/auth/me',
+          method: 'get',
+        }),
+    },
+    TeamController: {
+      getUserTeams: () =>
+        apiCallWrapper<Api.TeamController.GetUserTeams>(kyInstance, {
+          url: '/api/team/',
           method: 'get',
         }),
     },
