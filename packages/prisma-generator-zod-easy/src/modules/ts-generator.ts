@@ -16,7 +16,7 @@ import {
 } from 'typescript'
 
 import { FILENAMES, PRISMA_TYPES, PRISMA_ZOD_TYPES_MAP } from '../constants'
-import { isEmpty } from '../utils'
+import { isEmpty, removeExtension } from '../utils'
 
 interface IAddModelOptions {
   enums: string[]
@@ -368,7 +368,7 @@ export class TsGenerator {
 
     if (!isEmpty(enums)) {
       this.sourceFile.insertText(
-        this.sourceFile.getFullText().length,
+        0,
         this.printer.printNode(
           EmitHint.Unspecified,
           createImportDeclaration(
@@ -386,7 +386,7 @@ export class TsGenerator {
                 ),
               ),
             ),
-            createStringLiteral(FILENAMES.ENUMS),
+            createStringLiteral(removeExtension(FILENAMES.ENUMS)),
           ),
           this.tsSource,
         ),
